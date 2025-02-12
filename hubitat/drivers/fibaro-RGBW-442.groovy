@@ -56,6 +56,7 @@ metadata {
 		name: "FIBARO RGBW Controller 2",
 		namespace: "gde",
 		author: "Jonathan Bond-Caron",
+		importUrl: "https://raw.githubusercontent.com/jbondc/monami/refs/heads/main/hubitat/drivers/fibaro-RGBW-442.groovy"
 	) {
 		capability "Initialize"
 		capability "Configuration"
