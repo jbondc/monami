@@ -1119,7 +1119,7 @@ void onSwitchReport(cmd, ep) {
 		return
 	}
 
-	if(cmd.hasProperty('duration') && cmd.targetValue == cmd.value && cmd.value == state.switch.level)
+	if(cmd.targetValue == cmd.value && cmd.value == state.switch.level)
 		return
 
 	onSwitchEvent(cmd.value, null, ep)
@@ -1739,6 +1739,9 @@ void onSwitchEvent(rawVal, String type, ep = null) {
 	sendEventLog(name:"level", value: level, type: type, unit:"%", desc: desc, ep)
 
 	state.switch.level = rawVal
+	if(rawVal > 0)
+		state.on.last.switchLevel = rawVal
+
 	onSwitchUpdate()
 	onSwitchChildEvent(type)
 }
@@ -1992,8 +1995,6 @@ private getConfigChildDevices() {
 
 	Map configChildDevices = [:]
 	String dni
-
-logTrace "CONFIG CHILD ${childConfig}"
 
 	childSetup = safeToInt(childConfig)
 
@@ -2422,5 +2423,5 @@ void logDebug(String msg) {
 //For Extreme Code Debugging - tracing commands
 void logTrace(String msg) {
 	//Uncomment to Enable
-	log.trace "${device.displayName}: ${msg}"
+	//log.trace "${device.displayName}: ${msg}"
 }
