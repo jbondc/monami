@@ -1,13 +1,17 @@
 {
+    "match": {
+        "~switch": "(relaySwitch|light|outlet|switch)"
+    },
     "drivers": {
-        "hubitat:Virtual Switch": "@capability:switch",
+        "hubitat:Generic Z-Wave Plus Outlet": "@capability:~switch",
 
-        "gde:FIBARO RGBW Controller 2": "hubitat:Zooz RRGBW Dimmer",
-        "gde:Jasco Dual Plug": "hubitat:Generic Switch",
+        "gde:FIBARO RGBW Controller 2": "hubitat:Zooz RGBW Dimmer",
+        "gde:Jasco Z-Wave Dual Outlet": "hubitat:Jasco Z-Wave Dual Outlet",
 
-        "jtp10181:Zooz ZEN31 RGBW Dimmer Advanced": "hubitat:Zooz RRGBW Dimmer",
+        "jtp10181:Universal Z-Wave Switch": "@capability:~switch",
+        "jtp10181:Zooz ZEN31 RGBW Dimmer Advanced": "hubitat:Zooz RGBW Dimmer",
 
-        "neiljackson1984:ZWave Configuration Explorer Device": "@capability:*"
+        "neiljackson1984:ZWave Configuration Explorer Device": "@drivers"
     },
     "components": {
         "hubitat:Generic Component Lock": "hubitat:Generic Component Switch",
