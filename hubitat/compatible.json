@@ -1,0 +1,18 @@
+{
+    "drivers": {
+        "hubitat:Virtual Switch": "@capability:switch",
+
+        "gde:FIBARO RGBW Controller 2": "hubitat:Zooz RRGBW Dimmer",
+        "gde:Jasco Dual Plug": "hubitat:Generic Switch",
+
+        "jtp10181:Zooz ZEN31 RGBW Dimmer Advanced": "hubitat:Zooz RRGBW Dimmer",
+
+        "neiljackson1984:ZWave Configuration Explorer Device": "@capability:*"
+    },
+    "components": {
+        "hubitat:Generic Component Lock": "hubitat:Generic Component Switch",
+        "hubitat:Generic Component Switch": "hubitat:Generic Component Dimmer",
+        "gde:Generic Component Lock": "hubitat:Generic Component Switch",
+        "gde:Generic Voltage PH Sensor": "christi999:Fibaro FGBS-222 Child Analog Input"
+    }
+}
