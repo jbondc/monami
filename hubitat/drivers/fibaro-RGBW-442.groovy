@@ -17,7 +17,7 @@
  *  - association improvements
  *
  * CHANGELOG:
- *  [1.0] - 2024-10-25 Initial Release (@jbondc)
+ *  [1.0] - 2025-02-12 Initial Release (@jbondc)
  *        - Added Preference to create "Child Devices": either for 'white' or 'color' (rgb) device.
  *        - Using the Configure command will re-create child devices based on 'Child Devices' preference (if changed).
  *        - When using an 'Set Effect' or 'Set Scene', the previous RGBW color and dimmer level will be restored once effects are disabled.
@@ -489,8 +489,6 @@ private getOnCmds() {
 			updateColors = state.on.RGBW
 		}
 	}
-
-	state.switch.target = true
 
 	if(updateColors) {
 		cmds << colorUpdateCmd([red: updateColors.red, green: updateColors.green, blue: updateColors.blue, white: updateColors.white])
@@ -1106,10 +1104,7 @@ void zwaveEvent(hubitat.zwave.commands.switchmultilevelv4.SwitchMultilevelReport
 }
 
 void onSwitchReport(cmd, ep) {
-
-	// Use target value and log event 
-	if(cmd.hasProperty('duration') && state.switch.target) {
-		state.switch.target = false
+	if(cmd.hasProperty('duration')) {
 		if(cmd.targetValue != cmd.value) {
 			Map evt = [name: "levelUpdate", value: "${cmd.value}->${cmd.targetValue}  ${cmd.duration}s", desc: "switch level update, completes in ${cmd.duration}s", isStateChange:true]
 			sendEventLog(evt, ep)
@@ -1122,7 +1117,7 @@ void onSwitchReport(cmd, ep) {
 	if(cmd.targetValue == cmd.value && cmd.value == state.switch.level)
 		return
 
-	onSwitchEvent(cmd.value, null, ep)
+	onSwitchEvent(cmd.targetValue, null, ep)
 }
 
 void zwaveEvent(hubitat.zwave.commands.sensormultilevelv11.SensorMultilevelReport cmd, ep=0) {
@@ -1588,9 +1583,6 @@ List getSetLevelCmds(Number level, Number duration=null, Integer endPoint=0) {
 	List<String> cmds = []
 	Integer delay = (safeToInt(zwaveRampRate) * 1000)
 	cmds << switchMultilevelSetCmd(levelVal, durationVal, endPoint)
-
-	// Use target value on device MultilevelGetCmd() report, due to delay may not be fully 'on' yet
-	state.switch.target = true
 	cmds << switchMultilevelGetCmd()
 
 	return cmds
