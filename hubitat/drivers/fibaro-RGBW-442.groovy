@@ -504,9 +504,9 @@ private getOnCmds() {
 def off() {
 	logDebug "off..."
 	state.on.RGBW = state.RGBW
-	if(state.switch.level > 0)
-		state.on.last.switchLevel = state.switch.level
-
+	if(state.switch.targetValue) {
+		state.on.last.switchLevel = state.switch.targetValue
+	}
 	flashStop()
 	return delayBetween(getOnOffCmds(0x00), 100)
 }
@@ -1104,6 +1104,8 @@ void zwaveEvent(hubitat.zwave.commands.switchmultilevelv4.SwitchMultilevelReport
 }
 
 void onSwitchReport(cmd, ep) {
+	state.switch.targetValue = cmd.targetValue
+
 	if(cmd.hasProperty('duration')) {
 		if(cmd.targetValue != cmd.value) {
 			Map evt = [name: "levelUpdate", value: "${cmd.value}->${cmd.targetValue}  ${cmd.duration}s", desc: "switch level update, completes in ${cmd.duration}s", isStateChange:true]
